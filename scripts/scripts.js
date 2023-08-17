@@ -1,5 +1,5 @@
 const wordListElement = document.getElementById('word-list');
-const socket = new WebSocket('ws://go-web-app:8765' + window.location.search);
+const socket = new WebSocket('ws://192.168.86.22:8765' + window.location.search);
 const words = [];
 
 console.log('Attempting Connection...');
