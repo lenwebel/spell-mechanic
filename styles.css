@@ -7,9 +7,13 @@
 }
 
 
+
 body  div {
     display:flex;
     flex-direction:column;
+    /* align-items: center; */
+    /* justify-content: center; */
+
 }
 
 textarea {
@@ -40,4 +44,26 @@ textarea {
 #output .invalid {
     border: 1px solid #ff000070;
     background-color: #ff000070;
+}
+
+
+.spell {
+    display: flex;
+    flex-direction: row;
+    justify-content: revert;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+}
+
+.spell button {
+    flex: 0 1 100px;
+}
+
+.spell input {
+    flex: 1 1 300px;
+}
+.spellout {
+    letter-spacing: 1.4px;
+    margin-left: 15px
 }

@@ -1,4 +1,5 @@
 const wordListElement = document.getElementById('word-list');
+const spellout = document.getElementById('spellout');
 const socket = new WebSocket('ws://localhost:8765' + window.location.search);
 const words = [];
 
@@ -9,13 +10,15 @@ socket.addEventListener('open', () => {
 });
 
 socket.addEventListener('message', (event) => {
-    const message = event.data; 
+    const message = event.data;
     console.log('Received message:', message);
     words.push(message);
+    
+    const c = wordListElement?.value?.split('\n').map(f => f.toLowerCase()).includes(message.toLowerCase()) ? 'valid' : 'invalid';
 
-    const c = wordListElement.value.split('\n').map(f => f.toLowerCase()).includes(message.toLowerCase()) ? 'valid' : 'invalid';
-
-    document.getElementById('output').innerHTML += `<span class="${c}">` + message + '</span>';
+    const out = document.getElementById('output')
+    if(out)
+        out.innerHTML += `<span class="${c}">` + message ?? '' + '</span>';
 });
 
 socket.addEventListener('close', () => {
@@ -24,17 +27,25 @@ socket.addEventListener('close', () => {
 
 function sendMsg() {
     const message = document.getElementById('message').value;
+
+    if(!message) return;
     socket.send(message);
     document.getElementById('message').value = '';
-    message.setfocus();
 }
-
-
 
 window.onblur = () => {
     socket.send('Moved away from page')
 }
 
-window.onfocus =  () => {
+window.onfocus = () => {
     socket.send('Back on page')
 }
+
+
+function onMessageChanged(e) {
+    if (spellout)
+        spellout.innerHTML = e.target.value;
+}
+
+message.removeEventListener('keyup',(e) => onMessageChanged(e));
+message.addEventListener('keyup', (e) => onMessageChanged(e));
